@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Timesheet Entry Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      width: 400px;
+      margin: auto;
+      padding-top: 30px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+    <image src="C:\Users\ranje\OneDrive - Tek Artisans, LLC\Desktop\Ranjeeth Data\Tek Artisans Logo.png" alt="Tek Artisans Logo"
+ style="display: block; margin: auto; width: 425px; height: auto;">
+
+
+<h2>Employee Timesheet Entry</h2>
+
+<form id="timesheetForm">
+  <label>Date</label>
+  <input type="date" id="date" required>
+
+  <label>Employee Name</label>
+  <input type="text" id="name" required>
+
+  <label>Project</label>
+  <input type="text" id="project" required>
+
+  <label>Task Description</label>
+  <textarea id="task" required></textarea>
+
+  <label>Start Time</label>
+  <input type="time" id="start" required>
+
+  <label>End Time</label>
+  <input type="time" id="end" required>
+
+  <button type="submit">Submit Timesheet</button>
+</form>
+
+<script>
+document.getElementById("timesheetForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const start = document.getElementById("start").value;
+  const end = document.getElementById("end").value;
+
+  const payload = {
+    date: document.getElementById("date").value,
+    name: document.getElementById("name").value,
+    project: document.getElementById("project").value,
+    task: document.getElementById("task").value,
+    start: start,
+    end: end,
+    hours: calculateHours(start, end)
+  };
+
+  await fetch("https://script.google.com/macros/s/AKfycbz0XpiRHkgJODPUtNORDITspVMUyw3Dz6R6tHmcUyF-HjHJdWR4hRmabP6nToDXsTEWbw/exec", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+
+  alert("Timesheet submitted successfully!");
+  document.getElementById("timesheetForm").reset();
+});
+
+function calculateHours(start, end) {
+  let s = new Date("01/01/2000 " + start);
+  let e = new Date("01/01/2000 " + end);
+  return ((e - s) / 3600000).toFixed(2);
+}
+</script>
+
+</body>
+</html>
